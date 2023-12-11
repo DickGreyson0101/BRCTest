@@ -1,12 +1,17 @@
-﻿using BRCtest.BasePage;
+﻿using BRCtest.Components;
 using OpenQA.Selenium;
 using SeleniumUITest.BasePage;
 
 namespace SeleniumUITest.Pages
 {
-    public class LogInPageComponent : BaseComponent
+    public class LogInPageComponent 
     {
         private IWebDriver driver;
+
+        public LogInPageComponent(IWebDriver driver)
+        {
+            this.driver = driver;
+        }   
 
         // Định nghĩa các phần tử trên trang đăng nhập
         //private readonly By helpLink = By.XPath("//a[contains(text(), 'Help')]");
@@ -18,19 +23,14 @@ namespace SeleniumUITest.Pages
         //private readonly By signInButton = By.Id("uxSingIn");
         private readonly By forgotPasswordLink = By.ClassName("x-link");
 
-        // Constructor
-        public LogInPageComponent(IWebDriver driver) : base(driver)
-        {
-
-        }
-
         
-        public LinkComponent HelpLink => new LinkComponent(driver, By.XPath("//a[contains(text(), 'Help')]"));
-        public LinkComponent PrivacyLink => new LinkComponent(driver, By.XPath("//a[contains(text(), 'Privacy')]"));
-        public LinkComponent TCLink => new LinkComponent(driver, By.XPath("//a[contains(text(), 'T&Cs')]"));
-        public InputComponent EmailInput => new InputComponent(driver, By.Id("uxLogin"));
-        public InputComponent PasswordInput => new InputComponent(driver, By.Name("uxPassword"));
-        public ButtonComponent LoginButton => new ButtonComponent(driver, By.Id("uxSingIn"));
+        public LinkComponent HelpLink => new LinkComponent(By.XPath("//a[contains(text(), 'Help')]"), driver);
+        public LinkComponent PrivacyLink => new LinkComponent(By.XPath("//a[contains(text(), 'Privacy')]"), driver);
+        public LinkComponent TCLink => new LinkComponent(By.XPath("//a[contains(text(), 'T&Cs')]"), driver);
+        public InputComponent EmailInput => new InputComponent(By.Id("uxLogin"), driver);
+        public InputComponent PasswordInput => new InputComponent(By.Name("uxPassword"), driver);
+        public ButtonComponent LoginButton => new ButtonComponent(By.Id("uxSingIn"), driver);
+        
         public void Login(string username, string password)
         {
             EmailInput.EnterText(username);

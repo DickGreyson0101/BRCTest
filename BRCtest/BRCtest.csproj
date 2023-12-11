@@ -82,7 +82,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasePage\BaseClass.cs" />
-    <Compile Include="BasePage\BaseComponent.cs" />
+    <Compile Include="Components\ButtonComponent.cs" />
+    <Compile Include="Components\InputComponent.cs" />
+    <Compile Include="Components\LinkComponent.cs" />
     <Compile Include="Pages\HomePage.cs" />
     <Compile Include="Pages\LogInPageComponent.cs" />
     <Compile Include="Pages\PageFactory.cs" />

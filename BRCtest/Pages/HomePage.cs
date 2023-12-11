@@ -5,8 +5,12 @@ namespace SeleniumUITest.Pages
 {
     public class HomePage
     {
+        private IWebDriver driver;
+        public HomePage(IWebDriver driver)
+        {
+            this.driver = driver;
+        }
         // Sử dụng WebDriver từ BaseClass
-        private IWebDriver driver = BaseClass.GetDriver();
 
         public string GetTitle()
         {
