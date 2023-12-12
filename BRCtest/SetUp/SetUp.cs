@@ -5,16 +5,17 @@ using System;
 
 namespace SeleniumUITest.BasePage
 {
-    public abstract class BaseClass
+    public static class SetUp
     {
-        protected IWebDriver driver;
+         static IWebDriver driver;
 
-        public BaseClass() {
-            driver = GetDriver();
+        //public SetUp()
+        //{
+        //    driver = GetDriver();
 
-        }
+        //}
 
-        public IWebDriver GetDriver()
+        public static IWebDriver GetDriver()
         {
             if (driver == null)
             {
@@ -35,7 +36,7 @@ namespace SeleniumUITest.BasePage
         }
 
         [TestCleanup]
-        public void Cleanup()
+        public static void Cleanup()
         {
             if (driver != null)
             {
