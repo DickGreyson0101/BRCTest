@@ -2,25 +2,39 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using System;
+using BRCtest.SetUp;
 
 namespace SeleniumUITest.BasePage
 {
-    public abstract class BaseClass
+    public class SetUp
     {
-        protected IWebDriver driver;
+        static IWebDriver driver;
 
-        public BaseClass() {
-            driver = GetDriver();
+        //public SetUp()
+        //{
+        //    driver = GetDriver();
 
+        //}
+        public static IBrowser GetBrowser(string browserType)
+        {
+            switch (browserType.ToLower())
+            {
+                case "chrome":
+                    return new Browser();
+                // Add cases for other browser types (e.g., "firefox", "edge")
+                default:
+                    throw new ArgumentException("Unsupported browser type");
+            }
         }
-
+        string browserType = "chrome";
         public IWebDriver GetDriver()
         {
-            if (driver == null)
+            if (driver == null || true)
             {
                 try
                 {
-                    driver = new ChromeDriver();
+                    driver = GetBrowser(browserType).CreateWebDriver();
+                    //driver = new ChromeDriver();
                     driver.Manage().Window.Maximize();
                     driver.Navigate().GoToUrl("https://brc-uat.azurewebsites.net/Login.aspx?ReturnUrl=%2fDefault.aspx");
                 }

@@ -7,14 +7,30 @@ using System.Collections.Generic;
 namespace SeleniumUITest.Tests
 {
     [TestClass]
-    public class LogInTest : BaseClass
+    public class LogInTest
     {
-        private LogInPageComponent logInPage;
+        private IWebDriver driver;
+        private LogInPage logInPage;
+        private static SetUp setUp;
+
+        public LogInTest()
+        {
+            if (setUp == null)
+            {
+                setUp = new SetUp();
+            }
+        }
+
+
         [TestInitialize]
         public void Init()
         {
-            // Sử dụng PageFactory để tạo các trang
-            logInPage = new LogInPageComponent(driver);
+            driver = setUp.GetDriver();
+            //logInPage = LogInPage.GetInstance(driver);
+
+            //logInPage = new LogInPage(driver);
+
+            logInPage = new LogInPage(driver);
         }
 
         [DataTestMethod]
@@ -30,7 +46,7 @@ namespace SeleniumUITest.Tests
             logInPage.Login(email, password);
 
             // Thêm kiểm tra URL và thông báo thành công
-            string currentUrl = GetDriver().Url;
+            string currentUrl = driver.Url;
             bool urlCheck = currentUrl.Contains("https://brc-uat.azurewebsites.net/Home.aspx");
 
             bool messageDisplayed = false;
@@ -38,7 +54,7 @@ namespace SeleniumUITest.Tests
             {
                 try
                 {
-                    IWebElement successMessage = GetDriver().FindElement(By.CssSelector("#tab-1057-btnIconEl"));
+                    IWebElement successMessage = driver.FindElement(logInPage.SuccessfulMessage);
                     messageDisplayed = successMessage.Displayed;
                 }
                 catch (NoSuchElementException)
@@ -57,17 +73,17 @@ namespace SeleniumUITest.Tests
         public void VerifyLink(string linkName)
         {
 
-            string originalWindowHandle = GetDriver().CurrentWindowHandle;
+            string originalWindowHandle = driver.CurrentWindowHandle;
             logInPage.ClickLink(linkName);
-            foreach (string windowHandle in GetDriver().WindowHandles)
+            foreach (string windowHandle in driver.WindowHandles)
             {
                 if (windowHandle != originalWindowHandle)
                 {
-                    GetDriver().SwitchTo().Window(windowHandle);
+                    driver.SwitchTo().Window(windowHandle);
                     break;
                 }
             }
-            string currentUrl =     GetDriver().Url;
+            string currentUrl = driver.Url;
             string urlNew = string.Empty;
             switch (linkName)
             {
@@ -131,9 +147,9 @@ namespace SeleniumUITest.Tests
         [TestCleanup]
         public void Cleanup()
         {
-            if (GetDriver() != null)
+            if (driver != null)
             {
-                GetDriver().Quit();
+                driver.Quit();
             }
         }
 

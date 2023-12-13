@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using SeleniumUITest.BasePage;
 using System;
 using System.Collections.Generic;
