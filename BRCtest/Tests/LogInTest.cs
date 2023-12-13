@@ -9,27 +9,12 @@ namespace SeleniumUITest.Tests
     [TestClass]
     public class LogInTest
     {
-        private IWebDriver driver;
+        private IWebDriver driver = SetUp.driver;
         private LogInPage logInPage;
-        private static SetUp setUp;
-
-        public LogInTest()
-        {
-            if (setUp == null)
-            {
-                setUp = new SetUp();
-            }
-        }
-
 
         [TestInitialize]
         public void Init()
         {
-            driver = setUp.GetDriver();
-            //logInPage = LogInPage.GetInstance(driver);
-
-            //logInPage = new LogInPage(driver);
-
             logInPage = new LogInPage(driver);
         }
 
@@ -65,6 +50,7 @@ namespace SeleniumUITest.Tests
             bool result = urlCheck && messageDisplayed;
             Assert.AreEqual(expectedResult, result);
         }
+
 
         [DataTestMethod]
         [DataRow("Help")]
@@ -103,54 +89,22 @@ namespace SeleniumUITest.Tests
             Assert.AreEqual(true, urlCheck);
         }
 
-        [TestMethod]
-        //public void VerifyRememberMeFunctionality()
+
+
+        //[TestCleanup]
+        //public void Cleanup()
         //{
-        //    // Bước 1: Đăng nhập với tùy chọn 'Remember Me'
-        //    logInPage.EnterEmail("valid_email@example.com");
-        //    logInPage.EnterPassword("validPassword");
-        //    logInPage.TickRememberMe();
-        //    logInPage.ClickSignInButton();
-
-        //    // Thêm mã để kiểm tra đăng nhập thành công tại đây
-
-        //    // Bước 2: Đóng và mở lại trình duyệt
-        //    BaseClass.Cleanup();
-        //    var driver = BaseClass.GetDriver();
-        //    driver.Navigate().GoToUrl("https://brc-uat.azurewebsites.net/Login.aspx?ReturnUrl=%2fDefault.aspx");
-
-        //    // Bước 3: Kiểm tra xem người dùng có tự động đăng nhập không
-        //    // Đây là bước phức tạp, tùy thuộc vào cách thức ứng dụng web của bạn xử lý 'Remember Me'
-        //    // Có thể cần kiểm tra cookie, local storage, hoặc xác minh trực tiếp trên giao diện người dùng
-
-        //    // Ví dụ kiểm tra xem đã tự động đăng nhập hay chưa
-        //    bool isLoggedin = false;
-        //    try
+        //    if (driver != null)
         //    {
-        //        // Thay thế "selector" với selector phù hợp để xác nhận trạng thái đăng nhập
-        //        IWebElement loggedInElement = driver.FindElement(By.CssSelector("your_logged_in_selector"));
-        //        isLoggedin = loggedInElement != null && loggedInElement.Displayed;
+        //        driver.Quit();
         //    }
-        //    catch (NoSuchElementException)
-        //    {
-        //        isLoggedin = false;
-        //    }
-
-        //    // Kiểm tra kết quả
-        //    Assert.IsTrue(isLoggedin, "User is not logged in automatically with 'Remember Me'");
-
-        //    // Đóng trình duyệt sau khi kiểm thử
-        //    BaseClass.Cleanup();
         //}
 
 
-        [TestCleanup]
-        public void Cleanup()
+        [ClassCleanup]
+        public static void CleanupAfterAllTests()
         {
-            if (driver != null)
-            {
-                driver.Quit();
-            }
+            SetUp.Cleanup();
         }
 
     }

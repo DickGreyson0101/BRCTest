@@ -1,6 +1,7 @@
 ﻿using BRCtest.Components;
 using OpenQA.Selenium;
 using SeleniumUITest.BasePage;
+using System.Configuration;
 
 namespace SeleniumUITest.Pages
 {
@@ -13,8 +14,10 @@ namespace SeleniumUITest.Pages
         public LogInPage(IWebDriver driver)
         {
             this.driver = driver;
+            this.driver.Manage().Window.Maximize();
+            this.driver.Navigate().GoToUrl(ConfigurationManager.AppSettings["loginUrl"]);
         }
-       
+
         // Định nghĩa các phần tử trên trang đăng nhập
         //private readonly By helpLink = By.XPath("//a[contains(text(), 'Help')]");
         //private readonly By privacyLink = By.XPath("//a[contains(text(), 'Privacy')]");

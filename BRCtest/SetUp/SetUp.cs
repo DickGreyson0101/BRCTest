@@ -1,20 +1,32 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using System;
 using BRCtest.SetUp;
+using System.Configuration;
 
 namespace SeleniumUITest.BasePage
 {
-    public class SetUp
+    public static class SetUp
     {
-        static IWebDriver driver;
+        private static IWebDriver _driver;
 
-        //public SetUp()
-        //{
-        //    driver = GetDriver();
-
-        //}
+        public static IWebDriver driver
+        {
+            get
+            {
+                if (_driver == null)
+                {
+                    _driver = GetDriver();
+                }
+                return _driver;
+            }
+            set
+            {
+                if (_driver == null)
+                {
+                    _driver = value;
+                }
+            }
+        }
         public static IBrowser GetBrowser(string browserType)
         {
             switch (browserType.ToLower())
@@ -26,30 +38,23 @@ namespace SeleniumUITest.BasePage
                     throw new ArgumentException("Unsupported browser type");
             }
         }
-        string browserType = "chrome";
-        public IWebDriver GetDriver()
+        public static IWebDriver GetDriver()
         {
-            if (driver == null || true)
+            try
             {
-                try
-                {
-                    driver = GetBrowser(browserType).CreateWebDriver();
-                    //driver = new ChromeDriver();
-                    driver.Manage().Window.Maximize();
-                    driver.Navigate().GoToUrl("https://brc-uat.azurewebsites.net/Login.aspx?ReturnUrl=%2fDefault.aspx");
-                }
-                catch (WebDriverException e)
-                {
-                    // Handle exceptions related to WebDriver initialization here
-                    Console.WriteLine("WebDriver initialization failed: " + e.Message);
-                    throw; // Re-throw the exception if necessary
-                }
+                IWebDriver webDriver = GetBrowser(ConfigurationManager.AppSettings["browserType"]).CreateWebDriver();
+                return webDriver;
             }
-            return driver;
+            catch (WebDriverException e)
+            {
+                // Handle exceptions related to WebDriver initialization here
+                Console.WriteLine("WebDriver initialization failed: " + e.Message);
+                throw; // Re-throw the exception if necessary
+            }
+            
         }
 
-        [TestCleanup]
-        public void Cleanup()
+        public static void Cleanup()
         {
             if (driver != null)
             {
