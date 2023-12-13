@@ -95,7 +95,7 @@
     <Compile Include="Components\InputComponent.cs" />
     <Compile Include="Components\LinkComponent.cs" />
     <Compile Include="Pages\LogInPage.cs" />
-    <Compile Include="SetUp\Browser.cs" />
+    <Compile Include="SetUp\BrowserFactory.cs" />
     <Compile Include="SetUp\SetUp.cs" />
     <Compile Include="Tests\LogInTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -27,13 +27,20 @@ namespace SeleniumUITest.BasePage
                 }
             }
         }
-        public static IBrowser GetBrowser(string browserType)
+        public static IWebDriver GetBrowser(string browserType)
         {
             switch (browserType.ToLower())
             {
                 case "chrome":
-                    return new Browser();
-                // Add cases for other browser types (e.g., "firefox", "edge")
+                    {
+                        IBrowserFactory browserFactory = new ChromeBrowserFactory();
+                        return browserFactory.CreateWebDriver();
+                    }
+                case "firefox":
+                    {
+                        IBrowserFactory browserFactory = new FirefoxBrowserFactory();
+                        return browserFactory.CreateWebDriver();
+                    }
                 default:
                     throw new ArgumentException("Unsupported browser type");
             }
@@ -42,7 +49,7 @@ namespace SeleniumUITest.BasePage
         {
             try
             {
-                IWebDriver webDriver = GetBrowser(ConfigurationManager.AppSettings["browserType"]).CreateWebDriver();
+                IWebDriver webDriver = GetBrowser(ConfigurationManager.AppSettings["browserType"]);
                 return webDriver;
             }
             catch (WebDriverException e)
