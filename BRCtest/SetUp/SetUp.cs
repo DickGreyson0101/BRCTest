@@ -2,72 +2,19 @@
 using System;
 using BRCtest.SetUp;
 using System.Configuration;
+using BRCtest.BRCWebDriver;
 
 namespace SeleniumUITest.BasePage
 {
     public static class SetUp
     {
-        private static IWebDriver _driver;
-
-        public static IWebDriver driver
-        {
-            get
-            {
-                if (_driver == null)
-                {
-                    _driver = GetDriver();
-                }
-                return _driver;
-            }
-            set
-            {
-                if (_driver == null)
-                {
-                    _driver = value;
-                }
-            }
-        }
-        public static IWebDriver GetBrowser(string browserType)
-        {
-            switch (browserType.ToLower())
-            {
-                case "chrome":
-                    {
-                        IBrowserFactory browserFactory = new ChromeBrowserFactory();
-                        return browserFactory.CreateWebDriver();
-                    }
-                case "firefox":
-                    {
-                        IBrowserFactory browserFactory = new FirefoxBrowserFactory();
-                        return browserFactory.CreateWebDriver();
-                    }
-                default:
-                    throw new ArgumentException("Unsupported browser type");
-            }
-        }
-        public static IWebDriver GetDriver()
-        {
-            try
-            {
-                IWebDriver webDriver = GetBrowser(ConfigurationManager.AppSettings["browserType"]);
-                return webDriver;
-            }
-            catch (WebDriverException e)
-            {
-                // Handle exceptions related to WebDriver initialization here
-                Console.WriteLine("WebDriver initialization failed: " + e.Message);
-                throw; // Re-throw the exception if necessary
-            }
-            
-        }
-
         public static void Cleanup()
         {
-            if (driver != null)
+            if (BRCWebDriver.GetInstance() != null)
             {
                 try
                 {
-                    driver.Quit();
+                    BRCWebDriver.GetInstance().Quit();
                 }
                 catch (WebDriverException e)
                 {
@@ -75,7 +22,7 @@ namespace SeleniumUITest.BasePage
                 }
                 finally
                 {
-                    driver = null;
+                    BRCWebDriver.driver = null;
                 }
             }
         }

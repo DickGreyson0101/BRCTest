@@ -1,4 +1,5 @@
-﻿using BRCtest.Components;
+﻿using BRCtest.BRCWebDriver;
+using BRCtest.Components;
 using OpenQA.Selenium;
 using SeleniumUITest.BasePage;
 using System.Configuration;
@@ -7,15 +8,10 @@ namespace SeleniumUITest.Pages
 {
     public class LogInPage
     {
-        private static LogInPage _instance;
-
-        private IWebDriver driver;
-
-        public LogInPage(IWebDriver driver)
+        public LogInPage()
         {
-            this.driver = driver;
-            this.driver.Manage().Window.Maximize();
-            this.driver.Navigate().GoToUrl(ConfigurationManager.AppSettings["loginUrl"]);
+            BRCWebDriver.GetInstance().Manage().Window.Maximize();
+            BRCWebDriver.GetInstance().Navigate().GoToUrl(ConfigurationManager.AppSettings["loginUrl"]);
         }
 
         // Định nghĩa các phần tử trên trang đăng nhập
@@ -29,12 +25,12 @@ namespace SeleniumUITest.Pages
         // private readonly By forgotPasswordLink = By.ClassName("x-link");
 
 
-        public LinkComponent HelpLink => new LinkComponent(By.XPath("//a[contains(text(), 'Help')]"), driver);
-        public LinkComponent PrivacyLink => new LinkComponent(By.XPath("//a[contains(text(), 'Privacy')]"), driver);
-        public LinkComponent TCLink => new LinkComponent(By.XPath("//a[contains(text(), 'T&Cs')]"), driver);
-        public InputComponent EmailInput => new InputComponent(By.Id("uxLogin"), driver);
-        public InputComponent PasswordInput => new InputComponent(By.Name("uxPassword"), driver);
-        public ButtonComponent LoginButton => new ButtonComponent(By.Id("uxSingIn"), driver);
+        public LinkComponent HelpLink => new LinkComponent(By.XPath("//a[contains(text(), 'Help')]"), BRCWebDriver.GetInstance());
+        public LinkComponent PrivacyLink => new LinkComponent(By.XPath("//a[contains(text(), 'Privacy')]"), BRCWebDriver.GetInstance());
+        public LinkComponent TCLink => new LinkComponent(By.XPath("//a[contains(text(), 'T&Cs')]"), BRCWebDriver.GetInstance());
+        public InputComponent EmailInput => new InputComponent(By.Id("uxLogin"), BRCWebDriver.GetInstance());
+        public InputComponent PasswordInput => new InputComponent(By.Name("uxPassword"), BRCWebDriver.GetInstance());
+        public ButtonComponent LoginButton => new ButtonComponent(By.Id("uxSingIn"), BRCWebDriver.GetInstance());
 
         public By SuccessfulMessage = By.CssSelector("#tab-1057-btnIconEl");
 

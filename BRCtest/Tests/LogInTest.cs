@@ -3,19 +3,19 @@ using OpenQA.Selenium;
 using SeleniumUITest.Pages;
 using SeleniumUITest.BasePage;
 using System.Collections.Generic;
+using BRCtest.BRCWebDriver;
 
 namespace SeleniumUITest.Tests
 {
     [TestClass]
     public class LogInTest
     {
-        private IWebDriver driver = SetUp.driver;
         private LogInPage logInPage;
 
         [TestInitialize]
         public void Init()
         {
-            logInPage = new LogInPage(driver);
+            logInPage = new LogInPage();
         }
 
         [DataTestMethod]
@@ -31,7 +31,7 @@ namespace SeleniumUITest.Tests
             logInPage.Login(email, password);
 
             // Thêm kiểm tra URL và thông báo thành công
-            string currentUrl = driver.Url;
+            string currentUrl = BRCWebDriver.GetInstance().Url;
             bool urlCheck = currentUrl.Contains("https://brc-uat.azurewebsites.net/Home.aspx");
 
             bool messageDisplayed = false;
@@ -39,7 +39,7 @@ namespace SeleniumUITest.Tests
             {
                 try
                 {
-                    IWebElement successMessage = driver.FindElement(logInPage.SuccessfulMessage);
+                    IWebElement successMessage = BRCWebDriver.GetInstance().FindElement(logInPage.SuccessfulMessage);
                     messageDisplayed = successMessage.Displayed;
                 }
                 catch (NoSuchElementException)
@@ -59,17 +59,17 @@ namespace SeleniumUITest.Tests
         public void VerifyLink(string linkName)
         {
 
-            string originalWindowHandle = driver.CurrentWindowHandle;
+            string originalWindowHandle = BRCWebDriver.GetInstance().CurrentWindowHandle;
             logInPage.ClickLink(linkName);
-            foreach (string windowHandle in driver.WindowHandles)
+            foreach (string windowHandle in BRCWebDriver.GetInstance().WindowHandles)
             {
                 if (windowHandle != originalWindowHandle)
                 {
-                    driver.SwitchTo().Window(windowHandle);
+                    BRCWebDriver.GetInstance().SwitchTo().Window(windowHandle);
                     break;
                 }
             }
-            string currentUrl = driver.Url;
+            string currentUrl = BRCWebDriver.GetInstance().Url;
             string urlNew = string.Empty;
             switch (linkName)
             {
